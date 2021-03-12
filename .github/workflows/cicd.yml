@@ -1,0 +1,29 @@
+name: npm-module-maker ci/cd
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: install dependencies
+      run: npm ci
+
+    - name: build project
+      run: npm run build
+      
+    - name: test project
+      run: npm run test
+      env:
+        NICKNAME: ${{ secrets.NICKNAME }}
